@@ -161,7 +161,12 @@ button[kind="primary"] *, [data-testid="stBaseButton-primary"] *{color:#fff!impo
 .hrow{grid-template-columns:95px 1fr 58px!important;gap:8px!important;font-size:12px!important}
 .alarm{padding:11px 14px!important;font-size:13px!important;gap:10px!important}
 }
-"""
+@media(max-width:768px){
+[data-testid="stHeader"]{display:flex!important;background:transparent!important;height:3rem!important;pointer-events:none!important}
+[data-testid="stHeader"] *{pointer-events:auto!important}
+[data-testid="stSidebarCollapseButton"],[data-testid="collapsedControl"],button[kind="headerNoPadding"],button[aria-label*="sidebar" i],button[aria-label*="navigation" i]{display:flex!important;visibility:visible!important;opacity:1!important;z-index:999999!important}
+section[data-testid="stSidebar"]{z-index:999998!important}
+}"""
 st.markdown(f"<style>{THEME_VARS}{' '.join(CSS.split())}</style>", unsafe_allow_html=True)
 
 
@@ -492,7 +497,8 @@ with st.container(key="topbar"):
         </div>
     """)
 
-
+# Mobile quick page switcher (visible on narrow screens via CSS or directly usable)
+pages_list = ["Dashboard", "Today", "Upcoming", "Venues", "Analytics"]
 # ---------------------------------------------------------------
 # 8. PAGE ROUTING
 # ---------------------------------------------------------------
