@@ -39,6 +39,11 @@ def use_preset():
 if "c_brand" not in ss:
     ss["preset"] = "Ocean"
     use_preset()
+
+# ---- navigation drawer state (True = sidebar slid in) ----
+if "nav_open" not in ss:
+    ss["nav_open"] = False          # default closed; set to True to start open
+
 PRIMARY, SIDE, BG = ss["c_brand"], ss["c_side"], ss["c_bg"]
 COL = {"Tied up": "#94a3b8", "Sold": PRIMARY, "Cancelled": "#ef4444", "Lost": "#f59e0b"}
 
@@ -60,10 +65,15 @@ CSS = """
 input,button,textarea,select{font-family:inherit}
 [data-testid="stHeader"],[data-testid="stToolbar"],footer,#MainMenu,[data-testid="stSidebarHeader"],[data-testid="stSidebarCollapseButton"]{display:none!important}
 .block-container{padding:0 2rem 2.5rem!important;max-width:100%!important}
-section[data-testid="stSidebar"]{width:270px!important;min-width:270px!important;background:linear-gradient(180deg,var(--side-top),var(--side-bot));border:0}
-section[data-testid="stSidebar"]>div{background:transparent}
-section[data-testid="stSidebar"] [data-testid="stSidebarContent"]{padding:24px 16px}
-.logo{display:flex;align-items:center;gap:12px;margin:4px 6px 30px}
+
+/* ---- sidebar is now a fixed drawer that slides in/out ---- */
+section[data-testid="stSidebar"]{position:fixed!important;left:0!important;top:0!important;height:100vh!important;
+width:280px!important;min-width:280px!important;background:linear-gradient(180deg,var(--side-top),var(--side-bot));
+border:0;z-index:999998!important;box-shadow:0 12px 44px #0f172a55;transform:translateX(-106%);
+-webkit-transform:translateX(-106%);transition:transform .3s ease}
+section[data-testid="stSidebar"]>div{background:transparent;height:100%}
+section[data-testid="stSidebar"] [data-testid="stSidebarContent"]{padding:20px 16px;height:100%;overflow-y:auto}
+.logo{display:flex;align-items:center;gap:12px;margin:4px 6px 26px}
 .lg{width:44px;height:44px;border-radius:12px;background:#fff;display:grid;place-items:center;font-size:20px;font-weight:700;color:var(--brand)}
 .lt{color:#fff;font-size:24px;font-weight:600;line-height:1}.lt b{color:var(--brand-light)}
 .ls{color:#ffffffb3;font-size:11px;margin-top:5px}
@@ -74,8 +84,21 @@ section[data-testid="stSidebar"] div[role="radiogroup"] label p{color:#e8eeff;fo
 section[data-testid="stSidebar"] div[role="radiogroup"] label:hover{background:#ffffff1a}
 section[data-testid="stSidebar"] div[role="radiogroup"] label:has(input:checked){background:var(--brand);box-shadow:0 6px 16px #00000033}
 section[data-testid="stSidebar"] div[role="radiogroup"] label:has(input:checked) p{color:#fff;font-weight:600}
-.promo{margin-top:34px;padding:18px;border-radius:16px;background:#ffffff1a;border:1px solid #ffffff2e;color:#fff}
-.promo .pn{font-size:34px;font-weight:700;line-height:1.1}.promo .pt{font-size:13px;color:#ffffffcc;margin-top:6px}
+.promo{margin-top:30px;padding:18px;border-radius:16px;background:#ffffff1a;border:1px solid #ffffff2e;color:#fff}
+.promo .pn{font-size:32px;font-weight:700;line-height:1.1}.promo .pt{font-size:13px;color:#ffffffcc;margin-top:6px}
+
+/* ---- hamburger button in the top bar ---- */
+.st-key-nav_btn button{width:40px;height:40px;border-radius:10px!important;border:1px solid var(--line)!important;
+background:var(--card)!important;color:var(--ink)!important;font-size:17px!important;line-height:1!important;
+box-shadow:0 1px 3px #1018280a}
+/* ---- backdrop (invisible full-screen button that closes the drawer) ---- */
+.st-key-nav_backdrop,.st-key-nav_backdrop>div{position:fixed!important;top:0!important;left:0!important;
+width:100vw!important;height:100vh!important;margin:0!important;padding:0!important;z-index:999997!important}
+.st-key-nav_backdrop button{position:fixed!important;top:0!important;left:0!important;width:100vw!important;
+height:100vh!important;background:#0f172a!important;opacity:.45!important;border:0!important;border-radius:0!important;
+cursor:default!important}
+.st-key-nav_backdrop button p{display:none}
+
 .st-key-topbar{background:var(--card);margin:0 -2rem 26px;padding:14px 2rem;border-bottom:1px solid var(--line);box-shadow:0 2px 10px #1018280d}
 .datepill,.bell{display:flex;align-items:center;gap:8px;font-weight:500;color:var(--ink);font-size:15px;white-space:nowrap}
 .bell{font-size:20px;position:relative;justify-content:center}
@@ -144,9 +167,7 @@ button[kind="primary"] *, [data-testid="stBaseButton-primary"] *{color:#fff!impo
 @media(max-width:900px){.kpis{grid-template-columns:repeat(2,1fr)}}
 .kpi,.kpis>div{min-width:0!important;max-width:100%!important}
 @media(max-width:640px){
-[data-testid="stHeader"]{display:block!important;background:transparent!important;height:3rem!important}
-[data-testid="stToolbar"],#MainMenu,footer{display:none!important}
-.block-container{padding:2.6rem .85rem 2rem!important}
+.block-container{padding:1rem .85rem 2rem!important}
 .st-key-topbar{margin:0 -.85rem 16px!important;padding:12px .85rem!important}
 .st-key-topbar [data-testid="stHorizontalBlock"]{gap:8px!important}
 .kpis{grid-template-columns:1fr!important;gap:12px!important}
@@ -161,13 +182,18 @@ button[kind="primary"] *, [data-testid="stBaseButton-primary"] *{color:#fff!impo
 .hrow{grid-template-columns:95px 1fr 58px!important;gap:8px!important;font-size:12px!important}
 .alarm{padding:11px 14px!important;font-size:13px!important;gap:10px!important}
 }
-@media(max-width:768px){
-[data-testid="stHeader"]{display:flex!important;background:transparent!important;height:3rem!important;pointer-events:none!important}
-[data-testid="stHeader"] *{pointer-events:auto!important}
-[data-testid="stSidebarCollapseButton"],[data-testid="collapsedControl"],button[kind="headerNoPadding"],button[aria-label*="sidebar" i],button[aria-label*="navigation" i]{display:flex!important;visibility:visible!important;opacity:1!important;z-index:999999!important}
-section[data-testid="stSidebar"]{z-index:999998!important}
-}"""
+"""
 st.markdown(f"<style>{THEME_VARS}{' '.join(CSS.split())}</style>", unsafe_allow_html=True)
+if ss["nav_open"]:
+    st.markdown(
+        "<style>"
+        "section[data-testid='stSidebar']{"
+        "display:block!important;visibility:visible!important;"
+        "transform:translateX(0)!important;-webkit-transform:translateX(0)!important;"
+        "}"
+        "</style>",
+        unsafe_allow_html=True,
+    )
 
 
 # ---------------------------------------------------------------
@@ -434,9 +460,12 @@ def alarms_html():
 
 
 # ---------------------------------------------------------------
-# 6. SIDEBAR NAVIGATION
+# 6. SIDEBAR NAVIGATION (slides in/out as a drawer)
 # ---------------------------------------------------------------
 with st.sidebar:
+    _, c_x = st.columns([4.4, 0.6])
+    c_x.button("✕", key="nav_close", help="Close menu",
+               on_click=lambda: ss.update(nav_open=False))
     st.html(f"""
         <div class="logo">
             <div class="lg">P</div>
@@ -460,14 +489,25 @@ with st.sidebar:
         </div>
     """)
 
+# auto-close the drawer after the user picks a page
+if ss.get("last_page") != page:
+    ss["last_page"] = page
+    if ss["nav_open"]:
+        ss["nav_open"] = False
+        st.rerun()
+
 
 # ---------------------------------------------------------------
 # 7. TOP NAVIGATION BAR
 # ---------------------------------------------------------------
 with st.container(key="topbar"):
-    c_search, c_date, c_bell, c_theme, c_prof = st.columns(
-        [3.2, 1.7, 0.6, 0.8, 2.2], vertical_alignment="center"
+    c_menu, c_search, c_date, c_bell, c_theme, c_prof = st.columns(
+        [0.55, 3.0, 1.6, 0.55, 0.75, 2.0], vertical_alignment="center"
     )
+    if c_menu.button("☰", key="nav_btn", help="Open menu"):
+        ss["nav_open"] = not ss["nav_open"]
+        st.rerun()
+
     c_search.text_input(
         "Search",
         placeholder="Search events, venues, buyers...",
@@ -497,8 +537,11 @@ with st.container(key="topbar"):
         </div>
     """)
 
-# Mobile quick page switcher (visible on narrow screens via CSS or directly usable)
-pages_list = ["Dashboard", "Today", "Upcoming", "Venues", "Analytics"]
+# dark backdrop behind the drawer: clicking anywhere closes it
+if ss["nav_open"]:
+    st.button("Close menu", key="nav_backdrop", on_click=lambda: ss.update(nav_open=False))
+
+
 # ---------------------------------------------------------------
 # 8. PAGE ROUTING
 # ---------------------------------------------------------------
