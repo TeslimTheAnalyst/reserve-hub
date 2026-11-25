@@ -182,7 +182,32 @@ button[kind="primary"] *, [data-testid="stBaseButton-primary"] *{color:#fff!impo
 .hrow{grid-template-columns:95px 1fr 58px!important;gap:8px!important;font-size:12px!important}
 .alarm{padding:11px 14px!important;font-size:13px!important;gap:10px!important}
 }
-"""
+ @media(max-width:768px){
+.st-key-nav_btn{width:auto!important}
+.st-key-nav_btn button{
+width:auto!important;
+min-width:86px!important;
+height:38px!important;
+padding:0 12px!important;
+border-radius:10px!important;
+border:1.5px solid var(--brand)!important;
+background:var(--brand-soft)!important;
+color:var(--brand)!important;
+-webkit-text-fill-color:var(--brand)!important;
+font-size:13.5px!important;
+font-weight:700!important;
+display:inline-flex!important;
+align-items:center!important;
+gap:6px!important;
+box-shadow:0 2px 6px #10182814!important
+}
+.st-key-nav_btn button::after{
+content:"Menu";
+font-size:13px;
+font-weight:700;
+letter-spacing:.2px
+}
+}"""
 st.markdown(f"<style>{THEME_VARS}{' '.join(CSS.split())}</style>", unsafe_allow_html=True)
 if ss["nav_open"]:
     st.markdown(
