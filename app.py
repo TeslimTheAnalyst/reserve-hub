@@ -143,7 +143,7 @@ button[kind="primary"] *, [data-testid="stBaseButton-primary"] *{color:#fff!impo
 .vtrack{display:flex;flex-direction:column-reverse;height:150px;width:70%;max-width:44px;border-radius:8px 8px 4px 4px;overflow:hidden;background:var(--bg)}.vtrack i{display:block;width:100%}
 @media(max-width:900px){.kpis{grid-template-columns:repeat(2,1fr)}}
 """
-st.markdown(f"<style>{THEME_VARS}{' '.join(CSS.split())}</style>", unsafe_allow_html=True){THEME_VARS}{' '.join(CSS.split())}</style>")
+st.markdown(f"<style>{THEME_VARS}{' '.join(CSS.split())}</style>", unsafe_allow_html=True)
 
 
 # ---------------------------------------------------------------
