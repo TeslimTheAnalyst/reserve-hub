@@ -142,6 +142,25 @@ button[kind="primary"] *, [data-testid="stBaseButton-primary"] *{color:#fff!impo
 .vcol{flex:1;min-width:48px;display:flex;flex-direction:column;align-items:center;gap:6px;font-size:12px;color:var(--muted)}.vcol b{color:var(--ink);font-size:12px}
 .vtrack{display:flex;flex-direction:column-reverse;height:150px;width:70%;max-width:44px;border-radius:8px 8px 4px 4px;overflow:hidden;background:var(--bg)}.vtrack i{display:block;width:100%}
 @media(max-width:900px){.kpis{grid-template-columns:repeat(2,1fr)}}
+.kpi,.kpis>div{min-width:0!important;max-width:100%!important}
+@media(max-width:640px){
+[data-testid="stHeader"]{display:block!important;background:transparent!important;height:3rem!important}
+[data-testid="stToolbar"],#MainMenu,footer{display:none!important}
+.block-container{padding:2.6rem .85rem 2rem!important}
+.st-key-topbar{margin:0 -.85rem 16px!important;padding:12px .85rem!important}
+.st-key-topbar [data-testid="stHorizontalBlock"]{gap:8px!important}
+.kpis{grid-template-columns:1fr!important;gap:12px!important}
+.kpi{padding:14px 16px!important}
+.kv{font-size:24px!important}
+.pgt{font-size:24px!important}
+.pgs{font-size:13.5px!important}
+[class*="st-key-card"]{padding:14px!important;border-radius:14px!important}
+.ct{font-size:15px!important}
+.prof{justify-content:flex-start!important;margin-top:4px}
+.datepill{font-size:13.5px!important}
+.hrow{grid-template-columns:95px 1fr 58px!important;gap:8px!important;font-size:12px!important}
+.alarm{padding:11px 14px!important;font-size:13px!important;gap:10px!important}
+}
 """
 st.markdown(f"<style>{THEME_VARS}{' '.join(CSS.split())}</style>", unsafe_allow_html=True)
 
