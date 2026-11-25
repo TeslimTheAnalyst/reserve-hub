@@ -577,25 +577,29 @@ elif "Today" in page:
 
 elif "Upcoming" in page:
     st.html(head("Upcoming Reserves", "Future inventory exposure & pre-sold velocity"))
-    fut_df = df[df["Date of Event"] > today]
-    if fut_df.empty:
-        st.html('<div class="empty-card">No upcoming events found after the active date.</div>')
+    avail_dates = sorted(df["Date of Event"].dt.date.unique())
+    if not avail_dates:
+        st.html('<div class="empty-card">No event dates found in the dataset.</div>')
     else:
+        after_today = [d for d in avail_dates if pd.Timestamp(d) > today]
+        default_d = after_today[0] if after_today else avail_dates[-1]
+        fut_df = df[df["Date of Event"] > today] if after_today else df
+
         kpi_row(fut_df, None)
         st.html("<div style='height:14px'></div>")
 
         with st.container(key="card_fut_pick"):
             p_left, p_right = st.columns([3.5, 1.5], vertical_alignment="center")
-            p_left.html('<div class="ct">Select a Future Date</div>')
-            future_dates = sorted(fut_df["Date of Event"].dt.date.unique())
-            picked_date = p_right.selectbox(
-                "Pick a future date",
-                future_dates,
-                format_func=lambda d: d.strftime("%a %d %b %Y"),
+            p_left.html('<div class="ct">Select or Type a Date</div>')
+            picked_date = p_right.date_input(
+                "Pick or type a date",
+                value=ss.get("fut_date_pick", default_d),
+                min_value=avail_dates[0],
+                max_value=avail_dates[-1],
                 key="fut_date_pick",
                 label_visibility="collapsed",
             )
-            day_pick = fut_df[fut_df["Date of Event"] == pd.Timestamp(picked_date)]
+            day_pick = df[df["Date of Event"] == pd.Timestamp(picked_date)]
             st.html("<div style='height:10px'></div>")
             kpi_row(day_pick, None)
             st.html("<div style='height:10px'></div>")
