@@ -85,11 +85,18 @@ section[data-testid="stSidebar"] div[role="radiogroup"] label:has(input:checked)
 .av{position:relative;width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,var(--brand),var(--side-top));color:#fff;display:grid;place-items:center;font-weight:600}
 .av:after{content:"";position:absolute;right:0;bottom:1px;width:11px;height:11px;border-radius:50%;background:#22c55e;border:2px solid #fff}
 .prof b{display:block;font-size:14px;color:var(--ink)}.prof small{color:var(--muted);font-size:12px}
-div[data-baseweb="select"]>div,div[data-baseweb="input"]{border-radius:10px!important;border:1px solid var(--line)!important;background:var(--card)!important;color:var(--ink)!important}
-div[data-baseweb="select"] span,div[data-baseweb="select"] div{color:var(--ink)!important}
-input{color:var(--ink)!important;-webkit-text-fill-color:var(--ink)!important}
+div[data-baseweb="select"]>div,
+div[data-baseweb="select"]>div>div,
+div[data-baseweb="input"],
+div[data-baseweb="input"]>div,
+div[data-testid="stTextInput"] input,
+div[data-testid="stNumberInput"] input{border-radius:10px!important;border:1px solid var(--line)!important;background:var(--card)!important;background-color:var(--card)!important;color:var(--ink)!important}
+div[data-baseweb="select"] span,div[data-baseweb="select"] div,div[data-baseweb="select"] svg{color:var(--ink)!important;fill:var(--ink)!important}
+input{background:var(--card)!important;background-color:var(--card)!important;color:var(--ink)!important;-webkit-text-fill-color:var(--ink)!important}
 input::placeholder{color:var(--muted)!important;-webkit-text-fill-color:var(--muted)!important;opacity:1}
-.st-key-topbar div[data-baseweb="input"]{background:var(--bg)!important}
+.st-key-topbar div[data-baseweb="input"],
+.st-key-topbar div[data-baseweb="input"]>div,
+.st-key-topbar input{background:var(--bg)!important;background-color:var(--bg)!important}
 [data-testid="stPopover"] button{border-radius:10px!important;border:1px solid var(--line)!important;background:var(--card)!important;color:var(--ink)!important;font-weight:500!important}
 [data-testid="stPopover"] button p,[data-testid="stPopover"] button span{color:var(--ink)!important;-webkit-text-fill-color:var(--ink)!important}
 [data-testid="stPopoverBody"],div[data-baseweb="popover"]>div{background:var(--card)!important;color:var(--ink)!important;border:1px solid var(--line)!important;border-radius:12px!important}
@@ -136,7 +143,7 @@ button[kind="primary"] *, [data-testid="stBaseButton-primary"] *{color:#fff!impo
 .vtrack{display:flex;flex-direction:column-reverse;height:150px;width:70%;max-width:44px;border-radius:8px 8px 4px 4px;overflow:hidden;background:var(--bg)}.vtrack i{display:block;width:100%}
 @media(max-width:900px){.kpis{grid-template-columns:repeat(2,1fr)}}
 """
-st.html(f"<style>{THEME_VARS}{' '.join(CSS.split())}</style>")
+st.markdown(f"<style>{THEME_VARS}{' '.join(CSS.split())}</style>", unsafe_allow_html=True){THEME_VARS}{' '.join(CSS.split())}</style>")
 
 
 # ---------------------------------------------------------------
